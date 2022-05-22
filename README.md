@@ -29,4 +29,4 @@ TODO:
 
 ## Port Forwarding
 
-To expose the server to other networks, use [localtunnel](https://www.npmjs.com/package/localtunnel){target="_blank"} for an easy setup.
+To expose the server to other networks, use <a href="https://www.npmjs.com/package/localtunnel" target="_blank" rel="noopener">localtunnel</a> for an easy setup.
