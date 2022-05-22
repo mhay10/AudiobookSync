@@ -103,7 +103,7 @@ $(() => {
         progress.attr("max", e.target.duration);
         progress.val(0);
 
-        duration.text(formatSeconds(e.target.duration * 1000));
+        duration.text(formatSeconds(trackData.duration));
 
         // audio.currentTime = trackData.position;
         $("#now-playing").text(trackName);
@@ -112,7 +112,34 @@ $(() => {
     audio.ontimeupdate = (e) => {
         progress.val(e.target.currentTime);
 
-        time.text(formatSeconds(audio.currentTime * 1000));
+        time.text(formatSeconds(audio.currentTime));
+    };
+
+    audio.onended = async (e) => {
+        const basename = e.target.src.match(/\?(.+mp3)/)[1];
+        $.ajax({
+            url: `/sync?${audio.currentTime}&${basename}`,
+            method: "GET",
+            context: document.body,
+            success: (res) => {
+                console.log(res);
+            },
+        });
+
+        if (trackIndex + 1 < trackList.length - 1) {
+            trackIndex++;
+            trackData = tracks.find(
+                (track) =>
+                    track.name == trackList[trackIndex].children[0].textContent
+            );
+            trackName = trackData.name;
+            audio.src = `/play?${trackName}`;
+            audio.position = trackData.position;
+            audio.duration = trackData.duration;
+
+            time.text(formatSeconds(trackData.position));
+            $("#now-playing").text(trackName);
+        }
     };
 
     progress.on("input", (e) => {
@@ -140,9 +167,13 @@ $(() => {
                 (track) =>
                     track.name == trackList[trackIndex].children[0].textContent
             );
+
             trackName = trackData.name;
             audio.src = `/play?${trackName}`;
             audio.position = trackData.position;
+            audio.duration = trackData.duration;
+
+            time.text(formatSeconds(trackData.position));
             $("#now-playing").text(trackName);
         }
     });
@@ -157,7 +188,9 @@ $(() => {
             trackName = trackData.name;
             audio.src = `/play?${trackName}`;
             audio.position = trackData.position;
-            time.text(formatSeconds(trackData.position * 1000));
+            audio.duration = trackData.duration;
+
+            time.text(formatSeconds(trackData.position));
             $("#now-playing").text(trackName);
         }
     });
@@ -170,8 +203,6 @@ $(() => {
         trackIndex = trackList.findIndex(
             (track) => track.children[0].textContent === trackName
         );
-
-        console.log(trackIndex);
 
         audio.src = `/play?${trackName}`;
         audio.load();

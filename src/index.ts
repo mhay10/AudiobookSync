@@ -1,6 +1,7 @@
 import express from "express";
 import { exec } from "child_process";
 import fs from "fs";
+import path from "path";
 
 interface DBFile {
     name: string;
@@ -78,7 +79,7 @@ app.get("/play", (req, res) => {
 
         const track = findTrack(trackName, dbFile);
         if (track !== null) {
-            res.sendFile(track.path);
+            res.sendFile(path.resolve(track.path));
         } else {
             res.sendStatus(404);
         }

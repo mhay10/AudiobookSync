@@ -1,15 +1,22 @@
 # Audiobook Sync
 
-The program syncs audiobooks/music cross platform.
+Syncs audio positions of audiobooks or music across multiple devices.
 
 ---
 
 TODO:
 
-- [ ] Fix bug on windows where `mklink` doesn't get metadata
+- [x] Enable navigation buttons
+- [x] Fix bug on windows where `mklink` doesn't get metadata (Bypasses with `ffprobe`)
 - [ ] Make android app (If you use apple, I won't make something for that. Do it yourself)
 
 ---
+
+## Prerequisites
+
+- FFMpeg
+- NodeJS
+- Admin access (Windows only)
 
 ## Setup
 

@@ -1,30 +1,28 @@
 import path from "path";
+import { execSync } from "child_process";
 import fs from "fs";
+import fg from "fast-glob";
 
-let checkedDirs: string[] = [];
-let files: string[] = [];
+let files = fg.sync("./audio/**/*.mp3");
 
-const getAudioFiles = (currentDir: string, parentDir: string) => {
-    const paths = fs.readdirSync(currentDir);
-    paths.forEach((p) => {
-        const absPath = path.resolve("./audio", parentDir, p);
-        if (fs.statSync(absPath).isDirectory()) {
-            if (!checkedDirs.includes(p)) {
-                checkedDirs.push(p);
-                getAudioFiles(absPath, fs.realpathSync(absPath));
-            }
-        } else {
-            if (path.extname(absPath) == ".mp3") files.push(absPath);
-        }
-    });
+const getDuration = (path: string) => {
+    const cmd = `ffprobe -v quiet -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${path}"`;
+    const output = execSync(cmd);
+
+    return parseFloat(output.toString());
 };
 
-getAudioFiles("./audio", ".");
+interface DBFile {
+    name: string;
+    path: string;
+    position: number;
+    duration: number;
+}
 
 try {
     const trackData = JSON.parse(
         fs.readFileSync("./db.json").toString()
-    ) as any[];
+    ) as DBFile[];
 
     files.forEach((file) => {
         const exists = trackData.filter((v) => v.path == file).length == 1;
@@ -33,19 +31,31 @@ try {
                 name: path.basename(file),
                 path: file,
                 position: 0,
+                duration: getDuration(file)
             });
         }
     });
 
+    trackData.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+    });
     fs.writeFileSync("./db.json", JSON.stringify(trackData, null, "\t"));
 } catch {
     const trackData = files.map((file) => {
         return {
             name: path.basename(file),
             path: file,
-            position: 0
+            position: 0,
+            duration: getDuration(file)
         };
     });
 
+    trackData.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+    });
     fs.writeFileSync("./db.json", JSON.stringify(trackData, null, "\t"));
 }
