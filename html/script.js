@@ -7,22 +7,6 @@ const formatSeconds = (seconds) => {
     return new Date(seconds * 1000).toISOString().slice(11, 19);
 };
 
-const findTrackIndex = (track, tracklist) => {
-    let start = 0;
-    let end = tracklist.length - 1;
-
-    while (start <= end) {
-        let middle = Math.floor((start + end) / 2);
-
-        if (tracklist[middle].children[0].textContent === track) return middle;
-        else if (tracklist[middle].children[0].textContent < track)
-            start = middle + 1;
-        else end = middle - 1;
-    }
-
-    return -1;
-};
-
 const updateTracks = () => {
     $.ajax({
         url: "/tracks",
