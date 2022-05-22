@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" href="favicon.png" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Audiobook Sync</title>
+
+        <link rel="stylesheet" href="styles.css" />
+
+        <script src="jquery-3.6.0.js"></script>
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <h2>Audiobook Sync</h2>
+        <p>Sync audiobooks cross platform</p>
+
+        <div id="player-container">
+            <audio id="audio" preload="auto"></audio>
+            <input type="range" id="progress" value="0" />
+            <div id="player-controls">
+                <input
+                    type="image"
+                    src="back.png"
+                    height="30px"
+                    id="previous"
+                />
+                <input type="image" src="play.png" height="30px" id="control" />
+                <input
+                    type="image"
+                    src="forward.png"
+                    height="30px"
+                    id="control"
+                />
+            </div>
+            <p>Now Playing: <a id="now-playing"></a></p>
+            <p><a id="time">00:00</a> / <a id="duration">00:00</a></p>
+        </div>
+        <br />
+
+        <button id="update">Update Tracks</button>
+        <br />
+        <select id="books">
+            <option value="default" selected>-- Select Audiobook --</option>
+        </select>
+        <table id="tracks">
+            <thead>
+                <th>Track</th>
+                <th>Current Position</th>
+            </thead>
+            <tbody id="tracklist"></tbody>
+        </table>
+    </body>
+</html>
