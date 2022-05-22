@@ -6,6 +6,7 @@ The program syncs audiobooks/music cross platform.
 
 TODO:
 
+- [ ] Fix bug on windows where `mklink` doesn't get metadata
 - [ ] Make next and back buttons work
 - [ ] Make android app (If you use apple, I won't make something for that. Do it yourself)
 

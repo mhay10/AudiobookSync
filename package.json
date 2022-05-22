@@ -21,9 +21,9 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "audio": "tsc && node lib/getsongs.js",
-    "start": "tsc && node lib/index.js",
     "build": "tsc",
     "lint": "tslint -c tslint.json src/**/*.ts",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "start": "tsc && node lib/index.js"
   }
 }

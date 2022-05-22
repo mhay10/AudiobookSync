@@ -7,34 +7,21 @@ const formatSeconds = (seconds) => {
     return new Date(seconds * 1000).toISOString().slice(11, 19);
 };
 
-const findTrack = (track, db) => {
-    let start = 0;
-    let end = db.length - 1;
-
-    while (start <= end) {
-        let middle = Math.floor((start + end) / 2);
-
-        if (db[middle].name === track) return db[middle];
-        else if (db[middle].name < track) start = middle + 1;
-        else end = middle - 1;
-    }
-    return null;
-};
-
 const findTrackIndex = (track, tracklist) => {
     let start = 0;
     let end = tracklist.length - 1;
 
-    while(start <= end) {
+    while (start <= end) {
         let middle = Math.floor((start + end) / 2);
 
         if (tracklist[middle].children[0].textContent === track) return middle;
-        else if (tracklist[middle].children[0].textContent < track) start = middle + 1;
+        else if (tracklist[middle].children[0].textContent < track)
+            start = middle + 1;
         else end = middle - 1;
     }
 
     return -1;
-}
+};
 
 const updateTracks = () => {
     $.ajax({
@@ -68,6 +55,11 @@ const updateTracks = () => {
 
 $(() => {
     updateTracks();
+    tracks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        else if (a.name > b.name) return 1;
+        else return 0;
+    });
 
     $("#update").on("click", () => location.reload());
     $("#books").on("change", (e) => {
@@ -127,35 +119,24 @@ $(() => {
         progress.attr("max", e.target.duration);
         progress.val(0);
 
-        const date = new Date(e.target.duration * 1000)
-            .toISOString()
-            .slice(11, 19);
+        duration.text(formatSeconds(e.target.duration * 1000));
 
-        duration.text(date);
-
-        audio.currentTime = trackData.position;
+        // audio.currentTime = trackData.position;
         $("#now-playing").text(trackName);
     };
 
     audio.ontimeupdate = (e) => {
         progress.val(e.target.currentTime);
-        const date = new Date(audio.currentTime * 1000)
-            .toISOString()
-            .slice(11, 19);
 
-        time.text(date);
+        time.text(formatSeconds(audio.currentTime * 1000));
     };
 
     progress.on("input", (e) => {
-        const date = new Date(e.target.value * 1000)
-            .toISOString()
-            .slice(11, 19);
-
-        time.text(date);
+        time.text(formatSeconds(e.target.value * 1000));
     });
 
     progress.on("change", (e) => {
-        audio.currentTime = parseInt(e.target.value);
+        audio.currentTime = e.target.value;
     });
 
     control.on("click", async (e) => {
@@ -168,12 +149,43 @@ $(() => {
         }
     });
 
+    next.on("click", (e) => {
+        if (trackIndex + 1 < trackList.length) {
+            trackIndex++;
+            trackData = tracks.find(
+                (track) =>
+                    track.name == trackList[trackIndex].children[0].textContent
+            );
+            trackName = trackData.name;
+            audio.src = `/play?${trackName}`;
+            audio.position = trackData.position;
+            $("#now-playing").text(trackName);
+        }
+    });
+
+    prev.on("click", (e) => {
+        if (trackIndex - 1 >= 0) {
+            trackIndex--;
+            trackData = tracks.find(
+                (track) =>
+                    track.name == trackList[trackIndex].children[0].textContent
+            );
+            trackName = trackData.name;
+            audio.src = `/play?${trackName}`;
+            audio.position = trackData.position;
+            time.text(formatSeconds(trackData.position * 1000));
+            $("#now-playing").text(trackName);
+        }
+    });
+
     $("#tracklist").on("click", "tr", async (e) => {
-        tracklist = $("#tracklist").children("tr");
+        trackList = [...$("#tracklist").children("tr")];
         selectedTrack = e.target.parentNode.children;
         trackName = selectedTrack[0].textContent;
-        trackData = findTrack(trackName, tracks);
-        trackIndex = findTrackIndex(trackName, tracklist);
+        trackData = tracks.find((track) => track.name === trackName);
+        trackIndex = trackList.findIndex(
+            (track) => track.children[0].textContent === trackName
+        );
 
         console.log(trackIndex);
 
