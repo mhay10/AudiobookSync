@@ -2,10 +2,14 @@
 
 The program syncs audiobooks/music cross platform.
 
-**TODO:**
+---
+
+TODO:
 
 - [ ] Make next and back buttons work
 - [ ] Make android app (If you use apple, I won't make something for that. Do it yourself)
+
+---
 
 ## Setup
 
