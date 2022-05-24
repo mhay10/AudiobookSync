@@ -38,11 +38,11 @@ const port = 3000;1
 
 app.use(express.static("./html"));
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
     res.sendFile("/html/index.html");
 });
 
-app.get("/tracks", (req, res) => {
+app.get("/tracks", (_, res) => {
     const cmd = exec("node lib/getsongs.js");
     cmd.on("close", () => {
         const dbFile = fs.readFileSync("./db.json");
