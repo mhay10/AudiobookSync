@@ -2,5 +2,6 @@ node_modules
 lib
 db.json
 audio
-personal_access_token.txt
 .project
+.idea
+.vscode
