@@ -14,7 +14,7 @@ const findTrack = (track: string, db: DBFile[]) => {
     let end = db.length - 1;
 
     while (start <= end) {
-        let middle = Math.floor((start + end) / 2);
+        const middle = Math.floor((start + end) / 2);
 
         if (db[middle].name === track) return db[middle];
         else if (db[middle].name < track) start = middle + 1;
@@ -23,8 +23,8 @@ const findTrack = (track: string, db: DBFile[]) => {
     return null;
 };
 
-const getDbFile = (path: string) => {
-    const dbFile = JSON.parse(fs.readFileSync(path).toString()) as DBFile[];
+const getDbFile = (loc: string) => {
+    const dbFile = JSON.parse(fs.readFileSync(loc).toString()) as DBFile[];
     dbFile.sort((a, b) => {
         if (a.name < b.name) return -1;
         else if (a.name > b.name) return 1;
