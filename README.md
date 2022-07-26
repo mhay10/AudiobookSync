@@ -30,9 +30,3 @@ TODO:
 ## Port Forwarding
 
 To expose the server to other networks, use [localtunnel](https://www.npmjs.com/package/localtunnel) for an easy setup.
-
-## Desktop App
-
-You need to build the app yourself but it is easy to do.  
-To build the app, run the `make` script. It will create an `out` folder.  
-The app should be in the `out/make` folder.
