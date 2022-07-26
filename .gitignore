@@ -5,3 +5,6 @@ audio
 .project
 .idea
 .vscode
+out/
+yarn.lock
+package-lock.json

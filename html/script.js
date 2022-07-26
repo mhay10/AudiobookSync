@@ -1,5 +1,7 @@
 /// <reference path="jquery-3.6.0.js" />
 
+const baseUrl = "http://audiobookpi.local:3000";
+
 let tracks = [];
 let folders = [];
 
@@ -9,7 +11,7 @@ const formatSeconds = (seconds) => {
 
 const updateTracks = () => {
     $.ajax({
-        url: "/tracks",
+        url: baseUrl + "/tracks",
         method: "GET",
         context: document.body,
         success: (res) => {
@@ -88,7 +90,7 @@ $(() => {
     audio.onpause = (e) => {
         const basename = e.target.src.match(/\?(.+mp3)/)[1];
         $.ajax({
-            url: `/sync?${audio.currentTime}&${basename}`,
+            url: baseUrl + `/sync?${audio.currentTime}&${basename}`,
             method: "GET",
             context: document.body,
             success: (res) => {
@@ -105,7 +107,7 @@ $(() => {
 
         duration.text(formatSeconds(trackData.duration));
 
-        // audio.currentTime = trackData.position;
+        audio.currentTime = trackData.position;
         $("#now-playing").text(trackName);
     };
 
@@ -118,7 +120,7 @@ $(() => {
     audio.onended = async (e) => {
         const basename = e.target.src.match(/\?(.+mp3)/)[1];
         $.ajax({
-            url: `/sync?${audio.currentTime}&${basename}`,
+            url: baseUrl + `/sync?${audio.currentTime}&${basename}`,
             method: "GET",
             context: document.body,
             success: (res) => {
@@ -133,7 +135,7 @@ $(() => {
                     track.name == trackList[trackIndex].children[0].textContent
             );
             trackName = trackData.name;
-            audio.src = `/play?${trackName}`;
+            audio.src = baseUrl + `/play?${trackName}`;
             audio.position = trackData.position;
             audio.duration = trackData.duration;
 
@@ -169,7 +171,7 @@ $(() => {
             );
 
             trackName = trackData.name;
-            audio.src = `/play?${trackName}`;
+            audio.src = baseUrl + `/play?${trackName}`;
             audio.position = trackData.position;
             audio.duration = trackData.duration;
 
@@ -186,7 +188,7 @@ $(() => {
                     track.name == trackList[trackIndex].children[0].textContent
             );
             trackName = trackData.name;
-            audio.src = `/play?${trackName}`;
+            audio.src = baseUrl + `/play?${trackName}`;
             audio.position = trackData.position;
             audio.duration = trackData.duration;
 
@@ -204,7 +206,7 @@ $(() => {
             (track) => track.children[0].textContent === trackName
         );
 
-        audio.src = `/play?${trackName}`;
+        audio.src = baseUrl + `/play?${trackName}`;
         audio.load();
     });
 });
