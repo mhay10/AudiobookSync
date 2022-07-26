@@ -1,5 +1,7 @@
 {
   "name": "AudiobookSync",
+  "description": "Sync your audiobooks across your devices",
+  "author": "mhay10",
   "version": "1.0.0",
   "main": "./lib/index.js",
   "type": "module",
