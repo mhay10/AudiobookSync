@@ -8,7 +8,9 @@ TODO:
 
 - [x] Enable navigation buttons
 - [x] Fix bug on windows where `mklink` doesn't get metadata (Bypasses with `ffprobe`)
+- [x] Make desktop app (Cross platform)
 - [ ] Make android app (If you use apple, I won't make something for that. Do it yourself)
+- [ ] Add Offline Function (Desktop and Android app)
 
 ---
 
