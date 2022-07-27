@@ -29,6 +29,11 @@ TODO:
 3. Create the database by running the `audio` script
 4. To start the server, run the `start` script
 
+## Desktop App
+
+The Desktop app is its own repository
+https://github.com/mhay10/AudiobookSyncDesktop
+
 ## Port Forwarding
 
 To expose the server to other networks, use [localtunnel](https://www.npmjs.com/package/localtunnel) for an easy setup.
